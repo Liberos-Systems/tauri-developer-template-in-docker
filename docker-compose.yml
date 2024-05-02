@@ -1,0 +1,21 @@
+services:
+  tauri-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: bridge
+    command: yarn tauri dev
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - ./tauri-docker:/tauri:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    develop:
+      watch:
+        - action: sync
+          path: tauri-docker
+          target: tauri/tauri-docker
+          ignore: 
+            - node_modules
+        # - action: rebuild
+        #   path: tauri-docker/src
